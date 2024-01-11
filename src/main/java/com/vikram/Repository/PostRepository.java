@@ -10,6 +10,6 @@ import com.vikram.models.Post;
 public interface PostRepository  extends JpaRepository<Post, Integer>{
 
 	@Query("select p from Post p where p.user.id=:userId")
-	List<Post> findPostByUserId(Integer userId);
+	List<Post> findPostByUserId(Integer userId); 
 	
 }

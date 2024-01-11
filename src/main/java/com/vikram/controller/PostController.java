@@ -21,7 +21,7 @@ import com.vikram.service.PostService;
 public class PostController {
 
 	@Autowired
-	private PostService postService;
+	 PostService postService;
 	
 	@PostMapping("/posts/user/{userId}")
 	public ResponseEntity<Post> createPost(@RequestBody Post post, @PathVariable Integer userId) throws Exception{
@@ -65,7 +65,7 @@ public class PostController {
 		return new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
 	}
 	
-	@PutMapping("/posts/{postId}/user/{userId}")
+	@PutMapping("/posts/save/{postId}/user/{userId}")
 	public ResponseEntity<Post> savedPostHandler(@PathVariable Integer postId, @PathVariable Integer userId) throws Exception{
 		
 		Post post = postService.savedPost(postId, userId);
@@ -73,7 +73,7 @@ public class PostController {
 		return new ResponseEntity<Post>(post, HttpStatus.ACCEPTED);
 	}
 	
-	@PutMapping("/posts/like{postId}/user/{userId}")
+	@PutMapping("/posts/like/{postId}/user/{userId}")
 	public ResponseEntity<Post> likePostHandler(@PathVariable Integer postId, @PathVariable Integer userId) throws Exception{
 		
 		Post post = postService.likePost(postId, userId);

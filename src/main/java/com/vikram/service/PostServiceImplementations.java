@@ -33,12 +33,12 @@ public class PostServiceImplementations  implements PostService {
 		
 		newPost.setCaption(post.getCaption());
 		newPost.setImage(post.getImage());
-		//newPost.setCreatedAt(new LocalDateTime());
+		newPost.setCreatedAt(LocalDateTime.now());
 		newPost.setUser(user);
 		newPost.setVideo(post.getVideo());
 		
 		
-		return null;
+		return postRepository.save(newPost);
 	}
 
 	@Override

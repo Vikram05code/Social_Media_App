@@ -1,6 +1,7 @@
 package com.vikram.models;
 
 import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Post {
 	private String image;
 	
 	private String video;
+	
 	
 	@ManyToOne
 	private User user;
