@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vikram.Repository.UserRepository;
+import com.vikram.config.JwtProvider;
 import com.vikram.models.User;
 
 @Service
@@ -19,7 +20,7 @@ public class UserServiceImplementation implements UserService{
 	@Override
 	public User registerUser(User user) {
 		User newUser = new User();
-		newUser.setId(user.getId());
+		//newUser.setId(user.getId());
 		newUser.setFirstName(user.getFirstName());
 		newUser.setLastName(user.getLastName());
 		newUser.setEmail(user.getEmail());
@@ -49,19 +50,19 @@ Optional<User> user = userRepository.findById(userId);
 	}
 
 	@Override
-	public User followUser(Integer userId1, Integer userId2) throws Exception {
+	public User followUser(Integer reqUserId, Integer userId2) throws Exception {
 		
-		User user1 = findUserById(userId1);
+		User reqUser = findUserById(reqUserId);
 		User user2 = findUserById(userId2);
 		
-		user2.getFollowers().add(userId1);
-		user1.getFollowings().add(userId2);
+		user2.getFollowers().add(reqUser.getId());
+		reqUser.getFollowings().add(userId2);
 		
-		userRepository.save(user1);
+		userRepository.save(reqUser);
 		userRepository.save(user2);
 		
 		
-		return user1;
+		return reqUser;
 	}
 
 	@Override
@@ -90,6 +91,9 @@ Optional<User> user = userRepository.findById(userId);
 		if(user.getPassword()!=null) {
 			oldUser.setPassword(user.getPassword());
 		}
+		if(user.getGender()!=null) {
+			oldUser.setGender(user.getGender());
+		}
 		
 		User updatedUser = userRepository.save(oldUser);
 		
@@ -104,6 +108,16 @@ Optional<User> user = userRepository.findById(userId);
 	public List<User> searchUser(String query) {
 		
 		return userRepository.searchUser(query);
+	}
+
+	@Override
+	public User findUserByJwt(String jwt) {
+		
+		String email = JwtProvider.getEmailFromJwtToken(jwt);
+		//System.out.println("email: "+email);
+		User user = userRepository.findByEmail(email);
+		//System.out.println("user : "+user);
+		return user;
 	}
 
 }
