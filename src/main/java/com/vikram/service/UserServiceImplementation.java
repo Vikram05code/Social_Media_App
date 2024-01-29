@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.vikram.Repository.UserRepository;
 import com.vikram.config.JwtProvider;
+import com.vikram.exception.UserException;
 import com.vikram.models.User;
 
 @Service
@@ -32,14 +33,14 @@ public class UserServiceImplementation implements UserService{
 	}
 
 	@Override
-	public User findUserById(Integer userId) throws Exception {
+	public User findUserById(Integer userId) throws UserException {
 Optional<User> user = userRepository.findById(userId);
 		
 		if(user.isPresent()) {
 			return user.get();
 		}
 		
-		throw new Exception("User do not exist with userId: "+userId);
+		throw new UserException("User do not exist with userId: "+userId);
 	}
 
 	@Override
@@ -50,7 +51,7 @@ Optional<User> user = userRepository.findById(userId);
 	}
 
 	@Override
-	public User followUser(Integer reqUserId, Integer userId2) throws Exception {
+	public User followUser(Integer reqUserId, Integer userId2) throws UserException {
 		
 		User reqUser = findUserById(reqUserId);
 		User user2 = findUserById(userId2);
@@ -66,12 +67,12 @@ Optional<User> user = userRepository.findById(userId);
 	}
 
 	@Override
-	public User updateUser(User user, Integer userId) throws Exception {
+	public User updateUser(User user, Integer userId) throws UserException {
 
 		Optional<User> user1 =	userRepository.findById(userId);
 		
 		if(user1.isEmpty()) {
-			throw new Exception("User do not exist with userId: "+userId);
+			throw new UserException("User do not exist with userId: "+userId);
 		}
 		
 

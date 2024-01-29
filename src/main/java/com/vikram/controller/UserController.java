@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vikram.Repository.UserRepository;
+import com.vikram.exception.UserException;
 import com.vikram.models.User;
 import com.vikram.service.UserService;
 
@@ -38,7 +39,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/api/users/{userId}")
-	public User getUserById(@PathVariable ("userId") Integer id) throws Exception {
+	public User getUserById(@PathVariable ("userId") Integer id) throws UserException {
 	   
 		User user = userService.findUserById(id);
 		
@@ -48,7 +49,7 @@ public class UserController {
 	
 	
 	@PutMapping("/api/users")
-	public User updateUser(@RequestHeader("Authorization") String jwt   ,@RequestBody User user ) throws Exception {
+	public User updateUser(@RequestHeader("Authorization") String jwt   ,@RequestBody User user ) throws UserException {
 	
 		User reqUser = userService.findUserByJwt(jwt);
 		
@@ -58,7 +59,7 @@ public class UserController {
 	
 	
 	@PutMapping("/api/users/follow/{userId2}")
-	public User followUser( @RequestHeader("Authorization") String jwt,  @PathVariable Integer userId2) throws Exception {
+	public User followUser( @RequestHeader("Authorization") String jwt,  @PathVariable Integer userId2) throws UserException {
 		
 		User reqUser = userService.findUserByJwt(jwt);
 		User user = userService.followUser(reqUser.getId(), userId2);
