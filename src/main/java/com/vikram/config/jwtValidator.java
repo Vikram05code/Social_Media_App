@@ -11,12 +11,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.vikram.exception.InvalidTokenException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class jwtValidator extends OncePerRequestFilter {
+public class JwtValidator extends OncePerRequestFilter {
 	
 
 	@Override
@@ -37,7 +39,8 @@ public class jwtValidator extends OncePerRequestFilter {
 				
 				
 			}catch(Exception e) {
-				throw new BadCredentialsException("invalid token...");
+				handleInvalidTokenException(response, e);
+                return; // Stop processing the filter chain
 			}
 			
 		}
@@ -46,6 +49,13 @@ public class jwtValidator extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	
+	private void handleInvalidTokenException(HttpServletResponse response, Exception exception) throws IOException {
+        // Log the exception or take any necessary action
+
+        // Return an unauthorized response to the client
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.getWriter().write("{\"error\": \"Invalid token\"}");
+    }
 
 }

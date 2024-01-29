@@ -49,7 +49,7 @@ public class UserController {
 	
 	
 	@PutMapping("/api/users")
-	public User updateUser(@RequestHeader("Authorization") String jwt   ,@RequestBody User user ) throws UserException {
+	public User updateUser(@RequestHeader("Authorization") String jwt   ,@RequestBody User user ) throws UserException{
 	
 		User reqUser = userService.findUserByJwt(jwt);
 		
